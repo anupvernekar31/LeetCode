@@ -1,0 +1,106 @@
+class Triple {
+    int first;
+    int second;
+    int time;
+    public Triple(int first, int second, int time){
+        this.first = first;
+        this.second = second;
+        this.time = time;
+    }
+}
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+//         int n = grid.length;
+//         int m = grid[0].length;
+//         int freshOranges = 0;
+        
+//         int vis[][] = new int[n][m];
+//         Queue<Triple> q = new LinkedList<>();
+        
+//         for(int i=0;i<n;i++){
+//             for(int j=0;j<m;j++){
+//                 if(grid[i][j] == 2){
+//                     vis[i][j] = 2;
+//                     q.add(new Triple(i,j,0));
+//                 }
+//                 if(grid[i][j] == 1) {
+//                     freshOranges++;
+//                 }
+//             }
+//         }
+//         int[] delRow = { -1, 0, 1, 0 };
+//         int[] delCol = { 0, 1, 0, -1 };
+        
+//         int tm = 0;
+//         int count = 0;
+        
+//         while(!q.isEmpty()){
+//             int row = q.peek().first;
+//             int col = q.peek().second;
+//             int t = q.peek().time;
+//             tm = Math.max(t, tm);
+            
+//             for(int i=0;i<4;i++){
+//                 int nrow = row + delRow[i];
+//                 int ncol = col + delCol[i];
+//                 if(nrow >=0 && nrow < n && ncol >=0 && ncol < m && grid[nrow][ncol] == 2 && vis[nrow][ncol] == 0){
+//                     vis[nrow][ncol] = 2;
+//                     q.add(new Triple(nrow, ncol, t+1));
+//                     count++;
+//                 }
+                
+//             }
+//         }
+        
+//         if(count!=freshOranges)
+//             return -1;
+//         return tm;
+        
+        if(grid == null || grid.length == 0) return 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+        int count_fresh = 0;
+        //Put the position of all rotten oranges in queue
+        //count the number of fresh oranges
+        for(int i = 0 ; i < rows ; i++) {
+            for(int j = 0 ; j < cols ; j++) {
+                if(grid[i][j] == 2) {
+                    queue.offer(new int[]{i , j});
+                }
+                if(grid[i][j] != 0) {
+                    count_fresh++;
+                }
+            }
+        }
+       
+        if(count_fresh == 0) return 0;
+        int countMin = 0, cnt = 0;
+        int dx[] = {0, 0, 1, -1};
+        int dy[] = {1, -1, 0, 0};
+        
+        //bfs starting from initially rotten oranges
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            cnt += size; 
+            for(int i = 0 ; i < size ; i++) {
+                int[] point = queue.poll();
+                for(int j = 0;j<4;j++) {
+                    int x = point[0] + dx[j];
+                    int y = point[1] + dy[j];
+                    
+                    if(x < 0 || y < 0 || x >= rows || y >= cols || grid[x][y] == 0 || 
+                    grid[x][y] == 2) continue;
+                    
+                    grid[x][y] = 2;
+                    queue.offer(new int[]{x , y});
+                }
+            }
+            if(queue.size() != 0) {
+                countMin++;
+            }
+        }
+        return count_fresh == cnt ? countMin : -1;
+    }
+}
