@@ -30,15 +30,15 @@ class Solution {
         }
         while(list1!=null){
             ListNode ans = new ListNode(list1.val);
-                temp.next = ans;
+            temp.next = ans;
             temp=temp.next;
-                list1 = list1.next;
+            list1 = list1.next;
         }
         while(list2!=null){
             ListNode ans = new ListNode(list2.val);
-                temp.next = ans;
+            temp.next = ans;
             temp=temp.next;
-                list2 = list2.next;
+            list2 = list2.next;
         }
         
         return dummy.next;
